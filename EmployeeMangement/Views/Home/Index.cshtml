@@ -6,23 +6,25 @@
 }<div class="card-deck">
     @foreach (var employee in Model)
     {
-        <div class="card m-3">
-            <div class="card-header">
-                <h3>@employee.Name</h3>
-            </div>
-            <img class="card-img-top" src="~/images/1.jpeg" />
-            <div class="card-footer text-center">
-                <a asp_controller="home" asp-action="details" asp-route-id="@employee.Id"
-                   class="btn btn-dark ">View</a>
-                <!--more methods to genere dynamic link (link with value
-            <a href="@Url.Action("details", "home",new { id = employee.Id})" class="btn btn-danger">Show</a>
-               @Html.ActionLink("View", "details", "home", new { id = employee.Id })
-            <a href="/home/details/@employee.Id" class="btn btn-primary">View</a>
-    -->
+     <div class="card m-3">
+         <div class="card-header">
+             <h3>@employee.Name</h3>
+         </div>
+         <!--adding image tag helper ==> asp-append-version -->
+         <img class="card-img-top" src="~/images/noimage.jpg" asp-append-version="true" />
+         <div class="card-footer text-center">
+             <!-- TagHelpers--- -->
+                    <a asp_controller="home" asp-action="details" asp-route-id="@employee.Id"
+                       class="btn btn-dark m-1" >View</a>
+                    <!--more methods to genere dynamic link (link with value()
+                <a href="@Url.Action("details", "home",new { id = employee.Id})" class="btn btn-danger">Show</a>
+                   @Html.ActionLink("View", "details", "home", new { id = employee.Id })
+                <a href="/home/details/@employee.Id" class="btn btn-primary">View</a>
+        -->
 
-                <a href="#" class="btn btn-primary">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
-            </div>
-        </div>
+             <a href="#" class="btn btn-primary m-1">Edit</a>
+             <a href="#" class="btn btn-danger m-1">Delete</a>
+         </div>
+     </div>
     }
 </div>

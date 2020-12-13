@@ -34,3 +34,4 @@ C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Deb
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\bin\Debug\netcoreapp3.1\libman.json
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Home\Create.cshtml.g.cs
