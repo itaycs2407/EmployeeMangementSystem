@@ -19,6 +19,23 @@ namespace EmployeeMangement.Models
             };
         }
 
+        public Employee addEmployee(Employee employee)
+        {
+            employee.Id = m_EmployeeList.Max(employee => employee.Id) + 1;
+            m_EmployeeList.Add(employee);
+            return employee;
+        }
+
+        public Employee Delete(int id)
+        {
+            Employee employeeToDelete = this.m_EmployeeList.FirstOrDefault(e => e.Id == id);
+            if (employeeToDelete!=null)
+            {
+                this.m_EmployeeList.Remove(employeeToDelete);
+            }
+            return employeeToDelete;
+        }
+
         public IEnumerable<Employee> GetAllEmployee()
         {
             return this.m_EmployeeList;
@@ -27,6 +44,19 @@ namespace EmployeeMangement.Models
         public Employee GetEmployee(int i_Id)
         {
             return this.m_EmployeeList.FirstOrDefault(element => element.Id == i_Id);
+        }
+
+        public Employee Update(Employee employeeChanges)
+        {
+            Employee employeeToChange = this.m_EmployeeList.FirstOrDefault(e => e.Id == employeeChanges.Id);
+            if (employeeToChange != null)
+            {
+                employeeToChange.Email = employeeChanges.Email;
+                employeeToChange.Department = employeeChanges.Department;
+                employeeToChange.Name = employeeChanges.Name;
+
+            }
+            return employeeToChange;
         }
     }
 }

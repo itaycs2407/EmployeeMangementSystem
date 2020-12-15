@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
+
 using EmployeeMangement.Models;
 
 namespace EmployeeMangement
@@ -27,11 +24,14 @@ namespace EmployeeMangement
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-               
-            services.AddMvc(option => option.EnableEndpointRouting = false)
-                .AddXmlSerializerFormatters();
+            // define the sql server to work with entity framework
+            //services.AddDbContextPool<AppDBContext>(options => options.UseSqlServer(this.config.GetConnectionString("EmployeeDBConnection"),null));
+            services.AddDbContextPool<AppDBContext>(options => options.UseSqlServer("server = (localdb)\\MSSQLLocalDB; database = EmployeeDB; Trusted_Connection = true",null));
+
+            services.AddMvc(option => option.EnableEndpointRouting = false).AddXmlSerializerFormatters();
             // dependcy Injection 
-            services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
+            //services.AddTransient<IEmployeeRepository, MockEmployeeRepository>();
+            services.AddScoped<IEmployeeRepository, SQLEmployeeRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
