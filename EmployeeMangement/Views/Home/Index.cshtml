@@ -2,16 +2,18 @@
 
 @{ 
     ViewBag.Title = "index page";
+   
 
 }<div class="card-deck">
     @foreach (var employee in Model)
     {
-     <div class="card m-3">
+        var photoPath = "~/images/" + (employee.PhotoPath ?? "car2.jpg");
+     <div class="card m-3" style="min-width : 18rem; max-width:30.5%;">
          <div class="card-header">
              <h3>@employee.Name</h3>
          </div>
          <!--adding image tag helper ==> asp-append-version -->
-         <img class="card-img-top" src="~/images/noimage.jpg" asp-append-version="true" />
+         <img class="card-img-top imgThumnail" src="@photoPath" asp-append-version="true" />
          <div class="card-footer text-center">
              <!-- TagHelpers--- -->
                     <a asp_controller="home" asp-action="details" asp-route-id="@employee.Id"
@@ -22,7 +24,7 @@
                 <a href="/home/details/@employee.Id" class="btn btn-primary">View</a>
         -->
 
-             <a href="#" class="btn btn-primary m-1">Edit</a>
+             <a  asp-route-id="@employee.Id" asp-action="edit" asp-controller="home" class="btn btn-primary m-1">Edit</a>
              <a href="#" class="btn btn-danger m-1">Delete</a>
          </div>
      </div>

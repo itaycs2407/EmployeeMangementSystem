@@ -1,24 +1,25 @@
-﻿using System;
+﻿using EmployeeMangement.Models;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeMangement.Models
+namespace EmployeeMangement.ViewModels
 {
-    public class Employee
+    public class EmployeeCreateViewModel
     {
-        public int Id { get; set; }
+
         [Required]
         [MaxLength(30, ErrorMessage = "name cannot exceed 30 chars")]
         public string Name { get; set; }
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",ErrorMessage = "not valid email")]
+        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage = "not valid email")]
         [Display(Name = "Office E-mail")]
         public string Email { get; set; }
         [Required]
         public Department? Department { get; set; }
-        public string PhotoPath { get; set; }
- 
+        public IFormFile Photo { get; set; }
     }
 }
