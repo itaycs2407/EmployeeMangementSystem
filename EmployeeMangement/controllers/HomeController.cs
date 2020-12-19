@@ -3,6 +3,7 @@ using EmployeeMangement.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,13 +16,15 @@ namespace EmployeeMangement.controllers
     public class HomeController : Controller
     {
         private readonly Models.IEmployeeRepository m_EmployeeRepository;
-        private readonly IHostingEnvironment m_HostingEnvironment;
+        private readonly IWebHostEnvironment m_HostingEnvironment;
+        private readonly ILogger logger;
 
-        public HomeController(Models.IEmployeeRepository i_EmployeeRepository, IHostingEnvironment i_HostingEnvironment
-                )
+        public HomeController(Models.IEmployeeRepository i_EmployeeRepository, IWebHostEnvironment i_HostingEnvironment, ILogger<HomeController> logger)
         {
+           
             this.m_EmployeeRepository = i_EmployeeRepository;
             this.m_HostingEnvironment = i_HostingEnvironment;
+            this.logger = logger;
         }
 
         // attribute routing
@@ -37,6 +40,14 @@ namespace EmployeeMangement.controllers
        // [Route("{id?}")]
         public ViewResult Details(int? Id)
         {
+
+            // for testing pourpse
+            //throw new Exception("EXCEPTION HAS OCCURD IN HOME/DETAILS");
+            logger.LogTrace("this is trace");
+            logger.LogInformation("this is information");
+            logger.LogError("this is error");
+            logger.LogDebug("this is debug");
+            logger.LogCritical("this is critical");
             Employee employee = this.m_EmployeeRepository.GetEmployee(Id.Value);
             if (employee == null)
             {

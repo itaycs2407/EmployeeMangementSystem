@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 using EmployeeMangement.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace EmployeeMangement
 {
@@ -27,8 +28,21 @@ namespace EmployeeMangement
             // define the sql server to work with entity framework
             //services.AddDbContextPool<AppDBContext>(options => options.UseSqlServer(this.config.GetConnectionString("EmployeeDBConnection"),null));
             services.AddDbContextPool<AppDBContext>(options => options.UseSqlServer("server = (localdb)\\MSSQLLocalDB; database = EmployeeDB; Trusted_Connection = true",null));
+            
+            // add the built-in identity system of asp.net and define the password rules
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequiredLength = 1;
+                options.Password.RequireNonAlphanumeric = false;
 
+            }).AddEntityFrameworkStores<AppDBContext>();
+            
             services.AddMvc(option => option.EnableEndpointRouting = false).AddXmlSerializerFormatters();
+            
             // dependcy Injection 
             //services.AddTransient<IEmployeeRepository, MockEmployeeRepository>();
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepo>();
@@ -48,6 +62,11 @@ namespace EmployeeMangement
                   */
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
+            }
             /*
                         FileServerOptions fileServerOptions = new FileServerOptions();
                         fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
@@ -59,6 +78,7 @@ namespace EmployeeMangement
                         //app.UseStaticFiles();
             */
             app.UseStaticFiles();
+            app.UseAuthentication();
             //app.UseMvcWithDefaultRoute();
 
             
