@@ -1,4 +1,5 @@
 ﻿using EmployeeMangement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,11 +20,32 @@ namespace EmployeeMangement.controllers
             this.signInManager = signInManager;
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
+
+
+        // can write in one line : [AcceptVerbs("Get","Post")]
+        [HttpGet]
         [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {email} is already in use");
+            }
+        }
+
+            [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -51,6 +73,7 @@ namespace EmployeeMangement.controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -58,13 +81,21 @@ namespace EmployeeMangement.controllers
 
 
         [HttpPost]
-        public async Task<IActionResult>Login(LoginViewModel model)
+        [AllowAnonymous]
+        public async Task<IActionResult>Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    // IsLocalUrl() - verify that the returnUrl is local
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        // can use Redirect but it wont verify that returnUrl is Local!
+                        return LocalRedirect(returnUrl);
+                    }
+
                     return RedirectToAction("index", "home");
                 }
                 

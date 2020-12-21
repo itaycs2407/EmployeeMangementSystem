@@ -1,5 +1,6 @@
 ﻿using EmployeeMangement.Models;
 using EmployeeMangement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 namespace EmployeeMangement.controllers
 {
   //  [Route("[controller]/[action]")]
+    [Authorize]  
     public class HomeController : Controller
     {
         private readonly Models.IEmployeeRepository m_EmployeeRepository;
@@ -30,6 +32,7 @@ namespace EmployeeMangement.controllers
         // attribute routing
        // [Route("")]// default route
       //  [Route("~/")] 
+      [AllowAnonymous]
         public ViewResult Index()
         {
             //return m_EmployeeRepository.GetEmployee(2).Name;
@@ -38,6 +41,7 @@ namespace EmployeeMangement.controllers
             return View(model);
         }
        // [Route("{id?}")]
+       [AllowAnonymous]
         public ViewResult Details(int? Id)
         {
 

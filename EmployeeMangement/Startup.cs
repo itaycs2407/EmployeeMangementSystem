@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 
 using EmployeeMangement.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace EmployeeMangement
 {
@@ -27,8 +29,8 @@ namespace EmployeeMangement
         {
             // define the sql server to work with entity framework
             //services.AddDbContextPool<AppDBContext>(options => options.UseSqlServer(this.config.GetConnectionString("EmployeeDBConnection"),null));
-            services.AddDbContextPool<AppDBContext>(options => options.UseSqlServer("server = (localdb)\\MSSQLLocalDB; database = EmployeeDB; Trusted_Connection = true",null));
-            
+            services.AddDbContextPool<AppDBContext>(options => options.UseSqlServer("server = (localdb)\\MSSQLLocalDB; database = EmployeeDB; Trusted_Connection = true", null));
+
             // add the built-in identity system of asp.net and define the password rules
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
@@ -40,8 +42,13 @@ namespace EmployeeMangement
                 options.Password.RequireNonAlphanumeric = false;
 
             }).AddEntityFrameworkStores<AppDBContext>();
-            
-            services.AddMvc(option => option.EnableEndpointRouting = false).AddXmlSerializerFormatters();
+
+
+            services.AddMvc(config => {
+                config.EnableEndpointRouting = false;
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            }).AddXmlSerializerFormatters(); 
             
             // dependcy Injection 
             //services.AddTransient<IEmployeeRepository, MockEmployeeRepository>();
