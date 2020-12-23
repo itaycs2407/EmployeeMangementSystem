@@ -161,5 +161,16 @@ namespace EmployeeMangement.controllers
 
             return uniqueFileName;
         }
+
+        #region allternative
+
+        [HttpGet]
+        public IActionResult alternate()
+        {
+            
+            return null;
+        }
+
+        #endregion
     }
 }

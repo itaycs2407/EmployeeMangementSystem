@@ -32,7 +32,7 @@ namespace EmployeeMangement
             services.AddDbContextPool<AppDBContext>(options => options.UseSqlServer("server = (localdb)\\MSSQLLocalDB; database = EmployeeDB; Trusted_Connection = true", null));
 
             // add the built-in identity system of asp.net and define the password rules
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
