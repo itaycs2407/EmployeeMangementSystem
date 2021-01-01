@@ -55,8 +55,13 @@ namespace EmployeeMangement.controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, false);
-                    return RedirectToAction("index", "home");
+                    if (!(signInManager.IsSignedIn(User) && User.IsInRole("admin")))
+                    {
+                        await signInManager.SignInAsync(user, false);
+                        return RedirectToAction("index", "home");
+                    }
+
+                    return RedirectToAction("ListUser", "Administrator");
                 }
                 foreach (var error in result.Errors)
                 {
@@ -104,6 +109,12 @@ namespace EmployeeMangement.controllers
             }
 
             return View(model);
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

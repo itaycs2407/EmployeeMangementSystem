@@ -42,9 +42,17 @@
                         <a asp-action="create" asp-controller="home" class="nav-link">Create</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a asp-action="alternate" asp-controller="home" class="nav-link">Allternative</a>
-                    </li>
+
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="false">Manage</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a asp-action="ListRole" asp-controller="Administrator" class="dropdown-item">Roles</a>
+                                <a asp-action="ListUser" asp-controller="Administrator" class="dropdown-item">Users</a>
+                            </div>
+                        </li>
+                    }
 
                 </ul>
                 <ul class="navbar-nav ml-auto">

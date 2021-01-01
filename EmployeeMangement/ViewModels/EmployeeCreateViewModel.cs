@@ -10,7 +10,6 @@ namespace EmployeeMangement.ViewModels
 {
     public class EmployeeCreateViewModel
     {
-
         [Required]
         [MaxLength(30, ErrorMessage = "name cannot exceed 30 chars")]
         public string Name { get; set; }

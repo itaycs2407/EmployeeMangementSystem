@@ -6,7 +6,6 @@ C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\bin\Deb
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\bin\Debug\netcoreapp3.1\EmployeeMangement.runtimeconfig.dev.json
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\bin\Debug\netcoreapp3.1\EmployeeMangement.dll
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\bin\Debug\netcoreapp3.1\EmployeeMangement.pdb
-C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\EmployeeMangement.csprojAssemblyReference.cache
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\EmployeeMangement.AssemblyInfoInputs.cache
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\EmployeeMangement.AssemblyInfo.cs
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\EmployeeMangement.csproj.CoreCompileInputs.cache
@@ -92,3 +91,11 @@ C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\bin\Deb
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\CreateRole.cshtml.g.cs
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\ListRole.cshtml.g.cs
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\EditRole.cshtml.g.cs
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\EmployeeMangement.csprojAssemblyReference.cache
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\EditUsersInRole.cshtml.g.cs
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Account\AccessDenied.cshtml.g.cs
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\ListUser.cshtml.g.cs
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\EditUser.cshtml.g.cs
