@@ -99,3 +99,4 @@ C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Deb
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Account\AccessDenied.cshtml.g.cs
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\ListUser.cshtml.g.cs
 C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\EditUser.cshtml.g.cs
+C:\Users\Itay Cohen\Desktop\Projects\EmployeeMangement\EmployeeMangement\obj\Debug\netcoreapp3.1\Razor\Views\Administrator\ManageUserRoles.cshtml.g.cs

@@ -71,7 +71,7 @@ namespace EmployeeMangement
             else
             {
                 app.UseExceptionHandler("/Error");
-                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
             /*
                         FileServerOptions fileServerOptions = new FileServerOptions();

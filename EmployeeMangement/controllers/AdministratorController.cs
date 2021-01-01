@@ -3,6 +3,9 @@ using EmployeeMangement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,16 +13,19 @@ using System.Threading.Tasks;
 namespace EmployeeMangement.controllers
 {
 
-    [Authorize(Roles = "admin")]
+  //  [Authorize(Roles = "admin")]
     public class AdministratorController : Controller
     {
+        private readonly ILogger<AdministratorController> logger;
 
         public RoleManager<IdentityRole> RoleMangerService { get; }
         public UserManager<ApplicationUser> UserManager { get; }
-        public AdministratorController(RoleManager<IdentityRole> roleMangerService, UserManager<ApplicationUser> userManager)
+        public AdministratorController(RoleManager<IdentityRole> roleMangerService, UserManager<ApplicationUser> userManager,
+                                        ILogger<AdministratorController> logger)
         {
             RoleMangerService = roleMangerService;
             UserManager = userManager;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -57,12 +63,6 @@ namespace EmployeeMangement.controllers
             return View(roles);
         }
 
-        [HttpGet]
-        public async Task<ActionResult> DeleteRole(IdentityRole roleToDelete)
-        {
-            var deleted = await RoleMangerService.DeleteAsync(roleToDelete);
-            return View("ListRole");
-        }
 
         [HttpGet]
         public async Task<IActionResult> EditRole(string id)
@@ -258,6 +258,120 @@ namespace EmployeeMangement.controllers
                 }
                 return View(model);
             }
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with id: {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                var result = await UserManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUser");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View("LisrUser");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string roleId)
+        {
+            var role = await RoleMangerService.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with id: {roleId} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                try
+                {
+                    var result = await RoleMangerService.DeleteAsync(role);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRole");
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View("LisrRole");
+                }
+
+                catch (DbUpdateException e)
+                {
+                    logger.LogError($"Error deleting role {e}");
+                    ViewBag.ErrorTitle = $"{role.Name} role is in use";
+                    ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users in this role";
+                    return View("Error");
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles(string userId)
+        {
+            ViewBag.userID = userId;
+
+            var user = await UserManager.FindByIdAsync(userId);
+            if (user ==null)
+            {
+                ViewBag.ErrorMessage = $"User with id {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            List<UserRolesViewModel> model = new List<UserRolesViewModel>();
+            foreach (var role in await RoleMangerService.Roles.ToListAsync())
+            {
+                UserRolesViewModel userRolesViewModel = new UserRolesViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name,
+                    IsSelected = false
+                };
+                if (await UserManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRolesViewModel.IsSelected = true;
+                }
+
+                model.Add(userRolesViewModel);
+            }
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> userRolesViewModel, string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with id {id} cannot be found from post";
+                return View("NotFound");
+            }
+            var roles = await UserManager.GetRolesAsync(user);
+            var result = await UserManager.RemoveFromRolesAsync(user, roles);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "cannot remove user existing roles");
+                return View(userRolesViewModel);
+            }
+            result = await UserManager.AddToRolesAsync(user, userRolesViewModel.Where(x => x.IsSelected).Select(y => y.RoleName));
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "cannot add selected roles to user");
+                return View(userRolesViewModel);
+            }
+
+            return RedirectToAction("EditUser", new { id = id });
         }
     }
 }
