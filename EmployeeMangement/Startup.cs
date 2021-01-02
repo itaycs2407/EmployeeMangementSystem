@@ -53,6 +53,10 @@ namespace EmployeeMangement
             // dependcy Injection 
             //services.AddTransient<IEmployeeRepository, MockEmployeeRepository>();
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepo>();
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,12 +8,13 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EmployeeMangement.controllers
 {
 
-  //  [Authorize(Roles = "admin")]
+    //  [Authorize(Roles = "admin")]
     public class AdministratorController : Controller
     {
         private readonly ILogger<AdministratorController> logger;
@@ -284,6 +285,7 @@ namespace EmployeeMangement.controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string roleId)
         {
             var role = await RoleMangerService.FindByIdAsync(roleId);
@@ -323,7 +325,7 @@ namespace EmployeeMangement.controllers
             ViewBag.userID = userId;
 
             var user = await UserManager.FindByIdAsync(userId);
-            if (user ==null)
+            if (user == null)
             {
                 ViewBag.ErrorMessage = $"User with id {userId} cannot be found";
                 return View("NotFound");
@@ -372,6 +374,65 @@ namespace EmployeeMangement.controllers
             }
 
             return RedirectToAction("EditUser", new { id = id });
+        }
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims(string userId)
+        {
+            var user = await UserManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with id {userId} cannot be found from post";
+                return View("NotFound");
+            }
+
+            var existingUserClaims = await UserManager.GetClaimsAsync(user);
+            var model = new UserClaimViewModel
+            {
+                UserId = userId
+            };
+
+            foreach (Claim claim in ClaimsStore.AllClaims)
+            {
+                UserClaim userClaim = new UserClaim()
+                {
+                    ClaimType = claim.Type,
+                    IsSelected = false
+                };
+
+                // check if the current claim is selected for the user
+                if (existingUserClaims.Any(c => c.Type == claim.Type))
+                {
+                    userClaim.IsSelected = true;
+                }
+                model.Claims.Add(userClaim);
+            }
+            return View(model);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserClaims(UserClaimViewModel userClaimViewModel)
+        {
+            var user = await UserManager.FindByIdAsync(userClaimViewModel.UserId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with id {userClaimViewModel.UserId} cannot be found from post";
+                return View("NotFound");
+            }
+            var claims = await UserManager.GetClaimsAsync(user);
+            var result = await UserManager.RemoveClaimsAsync(user, claims);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "cannot remove user existing claims");
+                return View(userClaimViewModel);
+            }
+            result = await UserManager.AddClaimsAsync(user, userClaimViewModel.Claims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "cannot add selected claimsto user");
+                return View(userClaimViewModel);
+            }
+            return RedirectToAction("EditUser", new { id = userClaimViewModel.UserId });
         }
     }
 }
